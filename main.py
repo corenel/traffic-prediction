@@ -1,5 +1,6 @@
 from __future__ import print_function
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 from keras.models import Sequential
 from keras.layers import Dense, LSTM, Activation, Dropout
@@ -12,13 +13,13 @@ tensorflow.python.control_flow_ops = control_flow_ops
 
 if __name__ == '__main__':
     print('-- Loading Data --')
-    X, y = data_loader('data/data302.csv')
+    X, y = data_loader('data/data_pems_16664.csv')
     X_train, y_train, X_test, y_test = train_test_split(X, y)
     print('Input shape:', X.shape)
     print('Output shape:', y.shape)
 
     print('--Creating Model--')
-    batch_size = 24
+    batch_size = 96
     epochs = 100
     out_neurons = 1
     hidden_neurons = 500
@@ -57,14 +58,18 @@ if __name__ == '__main__':
     print('Test score:', score[0])
     print('Test accuracy:', score[1])
 
-    # print('-- Predicting --')
-    # y_pred = model.predict(X_test, batch_size=batch_size)
-    #
-    # print('-- Plotting Results --')
-    # plt.subplot(2, 1, 1)
-    # plt.plot(y_test)
-    # plt.title('Expected')
-    # plt.subplot(2, 1, 2)
-    # plt.plot(y_pred)
-    # plt.title('Predicted')
-    # plt.show()
+    print('-- Predicting --')
+    y_pred = model.predict(X_test, batch_size=batch_size)
+
+    print('-- Plotting Results --')
+    plt.subplot(2, 1, 1)
+    plt.plot(y_test)
+    plt.title('Expected')
+    plt.subplot(2, 1, 2)
+    plt.plot(y_pred)
+    plt.title('Predicted')
+    plt.show()
+
+    print('--Saving results--')
+    pd.DataFrame(y_pred).to_csv("y_pred.csv")
+    pd.DataFrame(y_test).to_csv("y_test.csv")
