@@ -2,11 +2,13 @@ from __future__ import print_function
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from keras.models import Sequential
+from keras.models import Sequential, model_from_json
 from keras.layers import Dense, LSTM, Activation, Dropout
+from keras.utils.visualize_util import plot
 from random import uniform
 from datetime import datetime
 from utils import data_loader, train_test_split
+import json
 # Fix AttributeError: 'module' object has no attribute 'control_flow_ops'
 import tensorflow
 from tensorflow.python.ops import control_flow_ops
@@ -19,7 +21,13 @@ if __name__ == '__main__':
     print('Input shape:', X.shape)
     print('Output shape:', y.shape)
 
-    print('--Creating Model--')
+    # print('-- Reading pre-trained model and weights --')
+    # with open('model/model_20161028-205830.json') as f:
+    #     json_string = json.load(f)
+    #     model = model_from_json(json_string)
+    # model.load_weights('model/weights_20161028-205830.h5')
+
+    print('-- Creating Model--')
     batch_size = 96
     epochs = 100
     out_neurons = 1
@@ -49,6 +57,9 @@ if __name__ == '__main__':
                   optimizer="adam",
                   metrics=['accuracy'])
 
+    # Model Visualization
+    # plot(model, to_file='img/model.png', show_shapes=True)
+
     print('-- Training --')
     history = model.fit(X_train, y_train,
                         verbose=1,
@@ -57,25 +68,22 @@ if __name__ == '__main__':
                         validation_split=0.1,
                         shuffle=False)
 
-    print('--Testing--')
-    score = model.evaluate(X_test, y_test, verbose=0)
-    print('Test score:', score[0])
-    print('Test accuracy:', score[1])
-
     print('-- Predicting --')
-    y_pred = model.predict(X_test, batch_size=batch_size)
+    y_pred = model.predict(X_test, batch_size=12)
 
     print('-- Plotting Results --')
-    plt.subplot(2, 1, 1)
+    # plt.subplot(2, 1, 1)
     plt.plot(y_test)
-    plt.title('Expected')
-    plt.subplot(2, 1, 2)
+    # plt.title('Expected')
+    # plt.subplot(2, 1, 2)
     plt.plot(y_pred)
-    plt.title('Predicted')
+    # plt.title('Predicted')
     plt.show()
-
-    print('-- Saving results--')
-    pd.DataFrame(y_pred).to_csv("data/y_pred.csv")
-    pd.DataFrame(y_test).to_csv("data/y_test.csv")
-    weight_file = 'weights/' + datetime.now().strftime('%Y%m%d-%H%M%S') + '.h5'
-    model.save_weights(weight_file, overwrite=True)
+    #
+    # print('-- Saving results --')
+    # now = datetime.now().strftime('%Y%m%d-%H%M%S')
+    # pd.DataFrame(y_pred).to_csv('predict/y_pred_' + now + '.csv')
+    # pd.DataFrame(y_test).to_csv('predict/y_test_' + now + '.csv')
+    # with open('model/model_' + now + '.json', 'w') as f:
+    #     json.dump(model.to_json(), f)
+    # model.save_weights('model/weights_' + now + '.h5', overwrite=True)

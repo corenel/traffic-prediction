@@ -1,7 +1,9 @@
 # Temp files
 *.h5
-data/y_pred.csv
-data/y_test.csv
+predict/y_pred_*.csv
+predict/y_test_*.csv
+model/model_*.json
+model/weights_*.h5
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
