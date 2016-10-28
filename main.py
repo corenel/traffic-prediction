@@ -57,11 +57,10 @@ if __name__ == '__main__':
                   optimizer="adam",
                   metrics=['accuracy'])
 
-    Model Visualization
-    plot(model, to_file='img/model.png', show_shapes=True)
 
     print('-- Training --')
-    history = model.fit(X_train, y_train,
+    history = model.fit(X_train,
+                        y_train,
                         verbose=1,
                         batch_size=batch_size,
                         nb_epoch=epochs,
@@ -69,12 +68,12 @@ if __name__ == '__main__':
                         shuffle=False)
 
     print('-- Predicting --')
-    y_pred = model.predict(X_test, batch_size=12)
+    y_pred = model.predict(X_test, batch_size=batch_size)
 
     print('-- Plotting Results --')
     plt.style.use('ggplot')
-    plt.plot(y_test, '-', label='Predicted')
-    plt.plot(y_pred, label='Expected', linewidth=2)
+    plt.plot(y_test, label='Expected', linewidth=2)
+    plt.plot(y_pred, label='Predicted')
     plt.title('Traffic Prediction')
     plt.xlabel('Smaple')
     plt.ylabel('Velocity')
@@ -88,3 +87,5 @@ if __name__ == '__main__':
     with open('model/model_' + now + '.json', 'w') as f:
         json.dump(model.to_json(), f)
     model.save_weights('model/weights_' + now + '.h5', overwrite=True)
+    # Model Visualization
+    plot(model, to_file='img/model.png', show_shapes=True)

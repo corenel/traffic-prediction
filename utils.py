@@ -19,7 +19,7 @@ def data_loader(filename):
 	y = np.array(y)
 	return X, y
 
-def train_test_split(X, y, test_size=288):
+def train_test_split(X, y, test_size=2016):
     if X.shape[0] != y.shape[0]:
         raise ValueError("X and y must have the same number of rows")
     split_idx = X.shape[0] - test_size
