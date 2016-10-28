@@ -1,5 +1,4 @@
 # Temp files
-*.h5
 predict/y_pred_*.csv
 predict/y_test_*.csv
 model/model_*.json
