@@ -1,7 +1,7 @@
 # Traffic Prediction
-Course lab about traffic prediction using LSTM.
+Predicting traffic velocity in Keras using LSTM.
 
 Still working on it.
 
 **Current results**:
-![Result](result.png)
+![Result](img/result.png)

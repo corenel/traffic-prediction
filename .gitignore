@@ -1,3 +1,8 @@
+# Temp files
+*.h5
+data/y_pred.csv
+data/y_test.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
