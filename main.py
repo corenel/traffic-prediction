@@ -22,10 +22,10 @@ if __name__ == '__main__':
     print('Output shape:', y.shape)
 
     # print('-- Reading pre-trained model and weights --')
-    # with open('model/model_20161028-205830.json') as f:
+    # with open('model/model.json') as f:
     #     json_string = json.load(f)
     #     model = model_from_json(json_string)
-    # model.load_weights('model/weights_20161028-205830.h5')
+    # model.load_weights('model/weights.h5')
 
     print('-- Creating Model--')
     batch_size = 96
@@ -57,8 +57,8 @@ if __name__ == '__main__':
                   optimizer="adam",
                   metrics=['accuracy'])
 
-    # Model Visualization
-    # plot(model, to_file='img/model.png', show_shapes=True)
+    Model Visualization
+    plot(model, to_file='img/model.png', show_shapes=True)
 
     print('-- Training --')
     history = model.fit(X_train, y_train,
@@ -72,18 +72,19 @@ if __name__ == '__main__':
     y_pred = model.predict(X_test, batch_size=12)
 
     print('-- Plotting Results --')
-    # plt.subplot(2, 1, 1)
-    plt.plot(y_test)
-    # plt.title('Expected')
-    # plt.subplot(2, 1, 2)
-    plt.plot(y_pred)
-    # plt.title('Predicted')
+    plt.style.use('ggplot')
+    plt.plot(y_test, '-', label='Predicted')
+    plt.plot(y_pred, label='Expected', linewidth=2)
+    plt.title('Traffic Prediction')
+    plt.xlabel('Smaple')
+    plt.ylabel('Velocity')
+    plt.legend()
     plt.show()
-    #
-    # print('-- Saving results --')
-    # now = datetime.now().strftime('%Y%m%d-%H%M%S')
-    # pd.DataFrame(y_pred).to_csv('predict/y_pred_' + now + '.csv')
-    # pd.DataFrame(y_test).to_csv('predict/y_test_' + now + '.csv')
-    # with open('model/model_' + now + '.json', 'w') as f:
-    #     json.dump(model.to_json(), f)
-    # model.save_weights('model/weights_' + now + '.h5', overwrite=True)
+
+    print('-- Saving results --')
+    now = datetime.now().strftime('%Y%m%d-%H%M%S')
+    pd.DataFrame(y_pred).to_csv('predict/y_pred_' + now + '.csv')
+    pd.DataFrame(y_test).to_csv('predict/y_test_' + now + '.csv')
+    with open('model/model_' + now + '.json', 'w') as f:
+        json.dump(model.to_json(), f)
+    model.save_weights('model/weights_' + now + '.h5', overwrite=True)
