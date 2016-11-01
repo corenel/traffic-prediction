@@ -1,8 +1,8 @@
 # Temp files
 predict/y_pred_*.csv
 predict/y_test_*.csv
-model/model_*.json
-model/weights_*.h5
+model/model_20*.json
+model/weights_20*.h5
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
